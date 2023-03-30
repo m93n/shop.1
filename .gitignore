@@ -129,7 +129,7 @@ dmypy.json
 .pyre/
 
 # migrations
-
+store/migrations/
 
 #vscode
 .vscode/
