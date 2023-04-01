@@ -6,12 +6,12 @@
 			<div class="thumb-gallery-wrapper">
 				<div class="thumb-gallery-detail owl-carousel owl-theme manual nav-inside nav-style-1 nav-dark mb-3">
 					<div>
-						<img alt="" class="img-fluid" src="{static 'img/products/product-grey-7.jpg' }" data-zoom-image="{static 'img/products/product-grey-7.jpg' }">
+						<img alt="" class="img-fluid" src="{%static 'img/products/product-grey-7.jpg' %}" data-zoom-image="{%static 'img/products/product-grey-7.jpg' %}">
 					</div>
 				</div>
 				<div class="thumb-gallery-thumbs owl-carousel owl-theme manual thumb-gallery-thumbs">
 					<div class="cur-pointer">
-						<img alt="" class="img-fluid" src="{static 'img/products/product-grey-7.jpg' }">
+						<img alt="" class="img-fluid" src="{%static 'img/products/product-grey-7.jpg' %}">
 					</div>
 				</div>
 			</div>
@@ -88,7 +88,7 @@
 						<input type="text" class="input-text qty text" title="Qty" value="1" name="quantity" min="1" step="1">
 						<input type="button" class="plus text-color-hover-light bg-color-hover-primary border-color-hover-primary" value="+">
 					</div>
-					<button href="{% url 'cart_detail' %}" class="btn btn-dark btn-modern text-uppercase bg-color-hover-primary border-color-hover-primary">Add to cart</button>
+					<button href="{% url 'cart_detail' %}" class="btn btn-dark btn-modern text-uppercase bg-color-hover-primary border-color-hover-primary">{% csrf_token %} Add to cart</button>
 					<hr>
 				</form>
 
