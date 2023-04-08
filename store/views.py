@@ -8,7 +8,6 @@ def product(request):
     return render(request, 'store\product.html')
 
 def cart(request):
-    print(f"##########################\n 555555555555555 \n ############################")
     return render(request, 'store\cart.html')
 
 def checkout(request):
