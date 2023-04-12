@@ -1,6 +1,19 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+RATE_CHOICES = [
+    ("1",0.5),
+    ("2",1),
+    ("3",1.5),
+    ("4",2),
+    ("5",2.5),
+    ("6",3),
+    ("7",3.5),
+    ("8",4),
+    ("9",4.5),
+    ("10",5),
+]
+
 class Category(models.Model):
     name = models.CharField(max_length=250, unique=True)
     slug = models.CharField(max_length=250, unique=True)
@@ -43,10 +56,10 @@ class Image(models.Model):
 
 class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=250)
     email = models.EmailField()
     review = models.TextField()
+    rate = models.CharField(max_length=2, choices=RATE_CHOICES)
     created = models.DateTimeField()
 
     def __str__(self):
