@@ -119,9 +119,9 @@
                                                     Categories
                                                 </a>
                                                 <ul class="dropdown-menu">
-                                                    {% for category in '1234' %}
+                                                    {% for category in links %}
                                                     <li>
-                                                        <a class="dropdown-item" href="{% url 'home' %}">Category</a>
+                                                        <a class="dropdown-item" href="{{category.get_url}}">{{ category.name }}</a>
                                                     </li>
                                                     {% endfor %}
                                                 </ul>

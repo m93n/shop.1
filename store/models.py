@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 RATE_CHOICES = [
     ("1",0.5),
@@ -23,6 +24,9 @@ class Category(models.Model):
     class Meta:
         ordering = ('name',)
         verbose_name_plural = 'categories'
+
+    def get_url(self):
+        return reverse('products_by_category', args=[self.slug])
 
     def __str__(self):
         return self.name
