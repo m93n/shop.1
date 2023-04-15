@@ -5,7 +5,7 @@
 	<div class="container">
 		<div class="masonry-loader masonry-loader-showing">
 			<div class="row products product-thumb-info-list" data-plugin-masonry data-plugin-options="{'layoutMode': 'fitRows'}">
-				{% for product in '12345678' %}
+				{% for product in products %}
 				<div class="col-12 col-sm-6 col-lg-3">
 					<div class="product mb-0">
 						<div class="product-thumb-info border-0 mb-3">
@@ -26,9 +26,9 @@
 							</a>
 							<a href="{% url 'product_detail' %}">
 								<div class="product-thumb-info-image product-thumb-info-image-effect">
-									<img alt="" class="img-fluid" src="{% static 'img/products/product-grey-7.jpg' %}">
+									<img alt="" class="img-fluid" src="{{product.get_first_image}}">
 
-										<img alt="" class="img-fluid" src="{% static 'img/products/product-grey-7-2.jpg' %}">
+										<img alt="" class="img-fluid" src="{{product.get_first_image}}">
 
 								</div>
 							</a>

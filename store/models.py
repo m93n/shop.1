@@ -42,13 +42,30 @@ class Product(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    def get_first_image(self):
+
+        images = self.image_set.all()
+
+        product = Product.objects.get(id=self.id)
+
+        # check for exist of image object or create a new
+        if not images:
+            image = self.image_set.create(name=self.name, image='product/product-grey-7.jpg', product=product)
+            image.save()
+            image_url = image.image.url
+        
+        else:
+            fisrt_image = images[0]
+            image_url = fisrt_image.image.url
+
+        return image_url
 
     def __str__(self):
         return self.name
 
 class Image(models.Model):
     name = models.CharField(max_length=250)
-    image = models.ImageField(upload_to='product', blank=True)
+    image = models.ImageField(upload_to='product')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     
     def __str__(self):
