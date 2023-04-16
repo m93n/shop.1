@@ -13,8 +13,14 @@ def home(request, category_slug=None):
     
     return render(request, 'store\home.html', {'category': category_page, 'products': products})
 
-def product(request):
-    return render(request, 'store\product.html')
+def product(request, category_slug, product_slug):
+    try:
+        product = models.Product.objects.get(slug=product_slug, category__slug=category_slug)
+
+    except Exception as e:
+        raise e
+
+    return render(request, 'store\product.html', {'product':product})
 
 def cart(request):
     return render(request, 'store\cart.html')

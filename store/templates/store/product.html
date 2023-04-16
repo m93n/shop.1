@@ -9,8 +9,7 @@
             <div class="col">
                 <ul class="breadcrumb breadcrumb-style-2 d-block text-4 mb-4">
                     <li><a href="{% url 'home' %}" class="text-color-default text-color-hover-primary text-decoration-none">Home</a></li>
-                    <li><a href="{% url 'home' %}" class="text-color-default text-color-hover-primary text-decoration-none">Electronics</a></li>
-                    <li>SMARTWATCHES</li>
+                    <li><a href="{% url 'products_by_category' product.category.slug %}" class="text-color-default text-color-hover-primary text-decoration-none">{{ product.category.name }}</a></li>
                 </ul>
             </div>
         </div>
@@ -62,12 +61,12 @@
 
                     <div class="position-absolute top-0 right-0">
                         <div class="products-navigation d-flex">
-                            <a href="{% url 'product_detail' %}" class="prev text-decoration-none text-color-dark text-color-hover-primary border-color-hover-primary" data-bs-toggle="tooltip" data-bs-animation="false" data-bs-original-title="Red Ladies Handbag"><i class="fas fa-chevron-left"></i></a>
-                            <a href="{% url 'product_detail' %}" class="next text-decoration-none text-color-dark text-color-hover-primary border-color-hover-primary" data-bs-toggle="tooltip" data-bs-animation="false" data-bs-original-title="Green Ladies Handbag"><i class="fas fa-chevron-right"></i></a>
+                            <a href="{% url 'product_detail' product.category.slug product.slug %}" class="prev text-decoration-none text-color-dark text-color-hover-primary border-color-hover-primary" data-bs-toggle="tooltip" data-bs-animation="false" data-bs-original-title="Red Ladies Handbag"><i class="fas fa-chevron-left"></i></a>
+                            <a href="{% url 'product_detail' product.category.slug product.slug %}" class="next text-decoration-none text-color-dark text-color-hover-primary border-color-hover-primary" data-bs-toggle="tooltip" data-bs-animation="false" data-bs-original-title="Green Ladies Handbag"><i class="fas fa-chevron-right"></i></a>
                         </div>
                     </div>
 
-                    <h1 class="mb-0 font-weight-bold text-7">Porto Headphone</h1>
+                    <h1 class="mb-0 font-weight-bold text-7"> {{product.name}} </h1>
 
                     <div class="pb-0 clearfix d-flex align-items-center">
                         <div title="Rated 3 out of 5" class="float-start">
@@ -341,7 +340,7 @@
                                     <a href="{% url 'quick_view' %}" class="quick-view text-uppercase font-weight-semibold text-2">
                                         QUICK VIEW
                                     </a>
-                                    <a href="{% url 'product_detail' %}">
+                                    <a href="#">
                                         <div class="product-thumb-info-image product-thumb-info-image-effect">
                                             <img alt="" class="img-fluid" src="{% static 'img/products/product-grey-7.jpg' %}">
 
@@ -353,7 +352,7 @@
                                 <div class="d-flex justify-content-between">
                                     <div>
                                         <a href="{% url 'home' %}" class="d-block text-uppercase text-decoration-none text-color-default text-color-hover-primary line-height-1 text-0 mb-1">accessories</a>
-                                        <h3 class="text-3-5 font-weight-medium font-alternative text-transform-none line-height-3 mb-0"><a href="{% url 'product_detail' %}" class="text-color-dark text-color-hover-primary">Porto Headphone</a></h3>
+                                        <h3 class="text-3-5 font-weight-medium font-alternative text-transform-none line-height-3 mb-0"><a href="#" class="text-color-dark text-color-hover-primary">Porto Headphone</a></h3>
                                     </div>
                                     <a href="#" class="text-decoration-none text-color-default text-color-hover-dark text-4"><i class="far fa-heart"></i></a>
                                 </div>
@@ -384,7 +383,7 @@
                 <div class="product row row-gutter-sm align-items-center mb-4">
                     <div class="col-5 col-md-12 col-lg-5">
                         <div class="product-thumb-info border-0">
-                            <a href="{% url 'product_detail' %}">
+                            <a href="#">
                                 <div class="product-thumb-info-image">
                                     <img alt="" class="img-fluid" src="{% static 'img/products/product-grey-1.jpg' %}">
 
@@ -394,7 +393,7 @@
                     </div>
                     <div class="col-7 col-md-12 col-lg-7 ms-md-0 ms-lg-0 ps-lg-1 pt-1">
                         <a href="{% url 'home' %}" class="d-block text-uppercase text-decoration-none text-color-default text-color-hover-primary line-height-1 text-0 mb-2">electronics</a>
-                        <h3 class="text-3-5 font-weight-medium font-alternative text-transform-none line-height-3 mb-0"><a href="{% url 'product_detail' %}" class="text-color-dark text-color-hover-primary text-decoration-none">Photo Camera</a></h3>
+                        <h3 class="text-3-5 font-weight-medium font-alternative text-transform-none line-height-3 mb-0"><a href="#" class="text-color-dark text-color-hover-primary text-decoration-none">Photo Camera</a></h3>
                         <div title="Rated 5 out of 5">
                             <input type="text" class="d-none" value="5" title="" data-plugin-star-rating data-plugin-options="{'displayOnly': true, 'color': 'dark', 'size':'xs'}">
                         </div>
