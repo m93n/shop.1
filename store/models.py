@@ -3,16 +3,16 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 
 RATE_CHOICES = [
-    ("1",0.5),
-    ("2",1),
-    ("3",1.5),
-    ("4",2),
-    ("5",2.5),
-    ("6",3),
-    ("7",3.5),
-    ("8",4),
-    ("9",4.5),
-    ("10",5),
+    ("0.5",0.5),
+    ("1",1),
+    ("1.5",1.5),
+    ("2",2),
+    ("2.5",2.5),
+    ("3",3),
+    ("3.5",3.5),
+    ("4",4),
+    ("4.5",4.5),
+    ("5",5),
 ]
 
 class Category(models.Model):
@@ -38,7 +38,8 @@ class Product(models.Model):
     summery = models.TextField(blank=True)
     description = models.TextField(blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+    sale_price = models.DecimalField(max_digits=10, decimal_places=2)
+    amount_price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.IntegerField()
     sku = models.IntegerField(blank=True)
     available = models.BooleanField(default=True)
@@ -80,7 +81,7 @@ class Review(models.Model):
     name = models.CharField(max_length=250)
     email = models.EmailField()
     review = models.TextField()
-    rate = models.CharField(max_length=2, choices=RATE_CHOICES)
+    rate = models.CharField(max_length=4, choices=RATE_CHOICES)
     created = models.DateTimeField()
 
     def __str__(self):
@@ -88,3 +89,6 @@ class Review(models.Model):
 
 class Tag(models.Model):
     name = models.CharField(max_length=250)
+
+    def __str__(self):
+        return self.name
