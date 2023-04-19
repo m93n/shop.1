@@ -49,8 +49,8 @@
                     <h1 class="mb-0 font-weight-bold text-7"> {{product.name}} </h1>
 
                     <div class="pb-0 clearfix d-flex align-items-center">
-                        <div title="Rated 3 out of 5" class="float-start">
-                            <input type="text" class="d-none" value="3" title="" data-plugin-star-rating data-plugin-options="{'displayOnly': true, 'color': 'primary', 'size':'xs'}">
+                        <div title="" class="float-start">
+                            <input type="text" class="rating-loading" value="{{ product.review_set.all.0.rate }}" title="" data-plugin-star-rating data-plugin-options="{'displayOnly': true, 'color': 'primary', 'size':'xs'}">
                         </div>
 
                         <div class="review-num">
@@ -335,7 +335,7 @@
             <div class="col-md-6 col-lg-3">
                 <h4 class="font-weight-semibold text-4 mb-3">FEATURED PRODUCTS</h4>
                 
-                {% for top_product in top_tag.product_set.all' %}
+                {% for top_product in top_tag.product_set.all %}
                 <div class="product row row-gutter-sm align-items-center mb-4">
                     <div class="col-5 col-md-12 col-lg-5">
                         <div class="product-thumb-info border-0">
@@ -354,8 +354,8 @@
                             <input type="text" class="rating" value="{{ related_product.review_set.all.0.rate }}" title="" data-plugin-star-rating data-plugin-options="{'displayOnly': true, 'color': 'dark', 'size':'xs'}">
                         </div>
                         <p class="price text-4 mb-0">
-                            <span class="sale text-color-dark font-weight-semi-bold">${{related_product.sale_price}}</span>
-                            <span class="amount">${{related_product.amount_price}}</span>
+                            <span class="sale text-color-dark font-weight-semi-bold">${{top_product.sale_price}}</span>
+                            <span class="amount">${{top_product.amount_price}}</span>
                         </p>
                     </div>
                 </div>
