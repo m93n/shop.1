@@ -1,5 +1,6 @@
 {% extends 'store/base.html' %}
 {% load static %}
+{% load custome_tag %}
 {% block content %}
 <div role="main" class="main shop pt-4">
 
@@ -283,8 +284,10 @@
                                 <div class="product-thumb-info border-0 mb-3">
 
                                     <div class="product-thumb-info-badges-wrapper">
+    								    {% if related_product.check_new_product %}
                                         <span class="badge badge-ecommerce badge-success">NEW</span>
-                                        <span class="badge badge-ecommerce badge-danger">27% OFF</span>
+								        {% endif %}
+                                        <span class="badge badge-ecommerce badge-danger">{% divide related_product.sale_price product.amount_price %}% OFF</span>
                                     </div>
 
                                     <div class="addtocart-btn-wrapper">

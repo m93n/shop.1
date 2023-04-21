@@ -1,6 +1,9 @@
 from django.db import models
-from django.contrib.auth.models import User
 from django.urls import reverse
+from datetime import datetime, timedelta
+import pytz
+
+datetime_now = datetime.now(tz=pytz.utc)
 
 RATE_CHOICES = [
     ("0.5",0.5),
@@ -46,6 +49,14 @@ class Product(models.Model):
     tag = models.ManyToManyField('Tag')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    def check_new_product(self):
+
+        new_product_datetime_length = datetime_now - timedelta(weeks=2)
+        if self.created >= new_product_datetime_length:
+            return True
+        
+        return False
 
     def get_first_image(self):
 
