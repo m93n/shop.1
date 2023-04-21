@@ -66,14 +66,22 @@
                     </div>
 
                     <p class="price mb-3">
-                        <span class="sale text-color-dark">$15,00</span>
-                        <span class="amount">$22,00</span>
+                        <span class="sale text-color-dark">${{product.sale_price}}</span>
+                        <span class="amount">${{product.amount_price}}</span>
                     </p>
 
                     <p class="text-3-5 mb-3">{{ product.summery }}</p>
 
                     <ul class="list list-unstyled text-2">
-                        <li class="mb-0">AVAILABILITY: <strong class="text-color-dark">{{product.available}}</strong></li>
+                        <li class="mb-0">AVAILABILITY: 
+                            <strong class="text-color-dark">
+                                {% if product.available %} 
+                                AVAILABLE
+                                {% else %}
+                                NOT AVAILABLE
+                                {% endif %}
+                            </strong>
+                        </li>
                         <li class="mb-0">SKU: <strong class="text-color-dark">{{ product.sku }}</strong></li>
                     </ul>
 
@@ -296,7 +304,7 @@
                                         </a>
                                     </div>
 
-                                    <a href="{% url 'quick_view' %}" class="quick-view text-uppercase font-weight-semibold text-2">
+                                    <a href="{% url 'quick_view' product.category.slug product.slug %}" class="quick-view text-uppercase font-weight-semibold text-2">
                                         QUICK VIEW
                                     </a>
                                     <a href="{% url 'product_detail' related_product.category.slug related_product.slug %}">

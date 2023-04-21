@@ -24,7 +24,7 @@
 								</a>
 							</div>
 
-							<a href="{% url 'quick_view' %}" class="quick-view text-uppercase font-weight-semibold text-2">
+							<a href="{% url 'quick_view' product.category.slug product.slug %}" class="quick-view text-uppercase font-weight-semibold text-2">
 								QUICK VIEW
 							</a>
 							<a href="{% url 'product_detail' product.category.slug product.slug %}">

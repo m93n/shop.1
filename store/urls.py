@@ -7,5 +7,5 @@ urlpatterns = [
     path('<slug:category_slug>/<slug:product_slug>', views.product, name='product_detail'),
     path('cart/', views.cart, name='cart_detail'),
     path('checkout/', views.checkout, name='checkout_page'),
-    path('quick_view/', views.quick_view, name='quick_view'),
+    path('quick_view/<slug:category_slug>/<slug:product_slug>', views.quick_view, name='quick_view'),
 ]

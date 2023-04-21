@@ -28,5 +28,11 @@ def cart(request):
 def checkout(request):
     return render(request, 'store\checkout.html')
 
-def quick_view(request):
-    return render(request, 'store/ajax/shop-product-quick-view.html')
+def quick_view(request, category_slug, product_slug):
+    try:
+        product = models.Product.objects.get(slug=product_slug, category__slug=category_slug)
+
+    except Exception as e:
+        raise e
+    
+    return render(request, 'store/ajax/shop-product-quick-view.html', {'product':product})
