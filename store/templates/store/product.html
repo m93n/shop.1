@@ -1,5 +1,6 @@
 {% extends 'store/base.html' %}
 {% load static %}
+{% load custome_tag %}
 {% block content %}
 <div role="main" class="main shop pt-4">
 
@@ -9,8 +10,7 @@
             <div class="col">
                 <ul class="breadcrumb breadcrumb-style-2 d-block text-4 mb-4">
                     <li><a href="{% url 'home' %}" class="text-color-default text-color-hover-primary text-decoration-none">Home</a></li>
-                    <li><a href="{% url 'home' %}" class="text-color-default text-color-hover-primary text-decoration-none">Electronics</a></li>
-                    <li>SMARTWATCHES</li>
+                    <li><a href="{% url 'products_by_category' product.category.slug %}" class="text-color-default text-color-hover-primary text-decoration-none">{{ product.category.name }}</a></li>
                 </ul>
             </div>
         </div>
@@ -19,38 +19,18 @@
 
                 <div class="thumb-gallery-wrapper">
                     <div class="thumb-gallery-detail owl-carousel owl-theme manual nav-inside nav-style-1 nav-dark mb-3">
+                        {% for image in product.image_set.all %}
                         <div>
-                            <img alt="" class="img-fluid" src="{% static 'img/products/product-grey-7.jpg' %}" data-zoom-image="{% static 'img/products/product-grey-7.jpg' %}">
+                            <img alt="" class="img-fluid" src="{{ image.image.url }}" data-zoom-image="{{ image.image.url }}">
                         </div>
-                        <div>
-                            <img alt="" class="img-fluid" src="{% static 'img/products/product-grey-7-2.jpg' %}" data-zoom-image="{% static 'img/products/product-grey-7-2.jpg' %}">
-                        </div>
-                        <div>
-                            <img alt="" class="img-fluid" src="{% static 'img/products/product-grey-7-3.jpg' %}" data-zoom-image="{% static 'img/products/product-grey-7-3.jpg' %}">
-                        </div>
-                        <div>
-                            <img alt="" class="img-fluid" src="{% static 'img/products/product-grey-7-4.jpg' %}" data-zoom-image="{% static 'img/products/product-grey-7-4.jpg' %}">
-                        </div>
-                        <div>
-                            <img alt="" class="img-fluid" src="{% static 'img/products/product-grey-7-5.jpg' %}" data-zoom-image="{% static 'img/products/product-grey-7-5.jpg' %}">
-                        </div>
+                        {% endfor %}
                     </div>
                     <div class="thumb-gallery-thumbs owl-carousel owl-theme manual thumb-gallery-thumbs">
+                        {% for image in product.image_set.all %}
                         <div class="cur-pointer">
                             <img alt="" class="img-fluid" src="{% static 'img/products/product-grey-7.jpg' %}">
                         </div>
-                        <div class="cur-pointer">
-                            <img alt="" class="img-fluid" src="{% static 'img/products/product-grey-7-2.jpg' %}">
-                        </div>
-                        <div class="cur-pointer">
-                            <img alt="" class="img-fluid" src="{% static 'img/products/product-grey-7-3.jpg' %}">
-                        </div>
-                        <div class="cur-pointer">
-                            <img alt="" class="img-fluid" src="{% static 'img/products/product-grey-7-4.jpg' %}">
-                        </div>
-                        <div class="cur-pointer">
-                            <img alt="" class="img-fluid" src="{% static 'img/products/product-grey-7-5.jpg' %}">
-                        </div>
+                        {% endfor %}
                     </div>
                 </div>
 
@@ -62,21 +42,21 @@
 
                     <div class="position-absolute top-0 right-0">
                         <div class="products-navigation d-flex">
-                            <a href="{% url 'product_detail' %}" class="prev text-decoration-none text-color-dark text-color-hover-primary border-color-hover-primary" data-bs-toggle="tooltip" data-bs-animation="false" data-bs-original-title="Red Ladies Handbag"><i class="fas fa-chevron-left"></i></a>
-                            <a href="{% url 'product_detail' %}" class="next text-decoration-none text-color-dark text-color-hover-primary border-color-hover-primary" data-bs-toggle="tooltip" data-bs-animation="false" data-bs-original-title="Green Ladies Handbag"><i class="fas fa-chevron-right"></i></a>
+                            <a href="{% url 'product_detail' product.category.slug product.slug %}" class="prev text-decoration-none text-color-dark text-color-hover-primary border-color-hover-primary" data-bs-toggle="tooltip" data-bs-animation="false" data-bs-original-title="Red Ladies Handbag"><i class="fas fa-chevron-left"></i></a>
+                            <a href="{% url 'product_detail' product.category.slug product.slug %}" class="next text-decoration-none text-color-dark text-color-hover-primary border-color-hover-primary" data-bs-toggle="tooltip" data-bs-animation="false" data-bs-original-title="Green Ladies Handbag"><i class="fas fa-chevron-right"></i></a>
                         </div>
                     </div>
 
-                    <h1 class="mb-0 font-weight-bold text-7">Porto Headphone</h1>
+                    <h1 class="mb-0 font-weight-bold text-7"> {{product.name}} </h1>
 
                     <div class="pb-0 clearfix d-flex align-items-center">
-                        <div title="Rated 3 out of 5" class="float-start">
-                            <input type="text" class="d-none" value="3" title="" data-plugin-star-rating data-plugin-options="{'displayOnly': true, 'color': 'primary', 'size':'xs'}">
+                        <div title="" class="float-start">
+                            <input type="text" class="rating-loading" value="{{ product.review_set.all.0.rate }}" title="" data-plugin-star-rating data-plugin-options="{'displayOnly': true, 'color': 'primary', 'size':'xs'}">
                         </div>
 
                         <div class="review-num">
                             <a href="#description" class="text-decoration-none text-color-default text-color-hover-primary" data-hash data-hash-offset="0" data-hash-offset-lg="75" data-hash-trigger-click=".nav-link-reviews" data-hash-trigger-click-delay="1000">
-                                <span class="count text-color-inherit" itemprop="ratingCount">(2</span> reviews)
+                                <span class="count text-color-inherit" itemprop="ratingCount">({{ product.review_set.all.count }}</span> reviews)
                             </a>
                         </div>
                     </div>
@@ -86,18 +66,26 @@
                     </div>
 
                     <p class="price mb-3">
-                        <span class="sale text-color-dark">$15,00</span>
-                        <span class="amount">$22,00</span>
+                        <span class="sale text-color-dark">${{product.sale_price}}</span>
+                        <span class="amount">${{product.amount_price}}</span>
                     </p>
 
-                    <p class="text-3-5 mb-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempus nibh sed elimttis adipiscing. Fusce in hendrerit purus. Lorem ipsum dolor sit amet.</p>
+                    <p class="text-3-5 mb-3">{{ product.summery }}</p>
 
                     <ul class="list list-unstyled text-2">
-                        <li class="mb-0">AVAILABILITY: <strong class="text-color-dark">AVAILABLE</strong></li>
-                        <li class="mb-0">SKU: <strong class="text-color-dark">1234567890</strong></li>
+                        <li class="mb-0">AVAILABILITY: 
+                            <strong class="text-color-dark">
+                                {% if product.available %} 
+                                AVAILABLE
+                                {% else %}
+                                NOT AVAILABLE
+                                {% endif %}
+                            </strong>
+                        </li>
+                        <li class="mb-0">SKU: <strong class="text-color-dark">{{ product.sku }}</strong></li>
                     </ul>
 
-                    <form enctype="multipart/form-data" method="post" class="cart" action="shop-cart.html">
+                    <form enctype="multipart/form-data" method="post" class="cart" action="{% url 'cart_detail' %}">
                         <table class="table table-borderless" style="max-width: 300px;">
                             <tbody>
                                 <tr>
@@ -187,8 +175,7 @@
                     </ul>
                     <div class="tab-content p-0">
                         <div class="tab-pane px-0 py-3 active" id="productDescription">
-                            <p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sagittis, massa fringilla consequat blandit, mauris ligula porta nisi, non tristique enim sapien vel nisl. Suspendisse vestibulum lobortis dapibus. </p>
-                            <p class="m-0">Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sagittis, massa fringilla consequat blandit, mauris ligula porta nisi, non tristique enim sapien vel nisl. Suspendisse vestibulum lobortis dapibus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae;</p>
+                            <p>{{ product.description }}</p>
                         </div>
                         <div class="tab-pane px-0 py-3" id="productInfo">
                             <table class="table table-striped m-0">
@@ -222,6 +209,7 @@
                         </div>
                         <div class="tab-pane px-0 py-3" id="productReviews">
                             <ul class="comments">
+                                {% for review in product.review_set.all %}
                                 <li>
                                     <div class="comment">
                                         <div class="img-thumbnail border-0 p-0 d-none d-md-block">
@@ -230,48 +218,24 @@
                                         <div class="comment-block">
                                             <div class="comment-arrow"></div>
                                             <span class="comment-by">
-                                                <strong>Jack Doe</strong>
+                                                <strong>{{ review.name }}</strong>
                                                 <span class="float-end">
                                                     <div class="pb-0 clearfix">
-                                                        <div title="Rated 3 out of 5" class="float-start">
-                                                            <input type="text" class="d-none" value="3" title="" data-plugin-star-rating data-plugin-options="{'displayOnly': true, 'color': 'primary', 'size':'xs'}">
+                                                        <div title="" class="float-start">
+                                                            <input type="text" class="rating-loading" value="{{ review.rate }}" title="" data-plugin-star-rating data-plugin-options="{'displayOnly': true, 'color': 'primary', 'size':'xs'}">
                                                         </div>
 
-                                                        <div class="review-num">
-                                                            <span class="count" itemprop="ratingCount">2</span> reviews
-                                                        </div>
+                                                        <!-- <div class="review-num">
+                                                            <span class="count" itemprop="ratingCount">{{ product.review_set.all.count }}</span> reviews
+                                                        </div> -->
                                                     </div>
                                                 </span>
                                             </span>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae, gravida pellentesque urna varius vitae.</p>
+                                            <p>{{ review.review }}</p>
                                         </div>
                                     </div>
                                 </li>
-                                <li>
-                                    <div class="comment">
-                                        <div class="img-thumbnail border-0 p-0 d-none d-md-block">
-                                            <img class="avatar rounded-circle" alt="" src="{% static 'img/avatars/avatar.jpg' %}">
-                                        </div>
-                                        <div class="comment-block">
-                                            <div class="comment-arrow"></div>
-                                            <span class="comment-by">
-                                                <strong>John Doe</strong>
-                                                <span class="float-end">
-                                                    <div class="pb-0 clearfix">
-                                                        <div title="Rated 3 out of 5" class="float-start">
-                                                            <input type="text" class="d-none" value="3" title="" data-plugin-star-rating data-plugin-options="{'displayOnly': true, 'color': 'primary', 'size':'xs'}">
-                                                        </div>
-
-                                                        <div class="review-num">
-                                                            <span class="count" itemprop="ratingCount">2</span> reviews
-                                                        </div>
-                                                    </div>
-                                                </span>
-                                            </span>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra odio, gravida urna varius vitae, gravida pellentesque urna varius vitae.</p>
-                                        </div>
-                                    </div>
-                                </li>
+                                {% endfor %}
                             </ul>
                             <hr class="solid my-5">
                             <h4>Add a review</h4>
@@ -323,13 +287,15 @@
                 <div class="products row">
                     <div class="col">
                         <div class="owl-carousel owl-theme nav-style-1 nav-outside nav-outside nav-dark mb-0" data-plugin-options="{'loop': false, 'autoplay': false, 'items': 4, 'nav': true, 'dots': false, 'margin': 20, 'autoplayHoverPause': true, 'autoHeight': true, 'stagePadding': '75', 'navVerticalOffset': '50px'}">
-                            {% for product in '123456789' %}
+                            {% for related_product in product.category.product_set.all %}
                             <div class="product mb-0">
                                 <div class="product-thumb-info border-0 mb-3">
 
                                     <div class="product-thumb-info-badges-wrapper">
+    								    {% if related_product.check_new_product %}
                                         <span class="badge badge-ecommerce badge-success">NEW</span>
-                                        <span class="badge badge-ecommerce badge-danger">27% OFF</span>
+								        {% endif %}
+                                        <span class="badge badge-ecommerce badge-danger">{% divide related_product.sale_price product.amount_price %}% OFF</span>
                                     </div>
 
                                     <div class="addtocart-btn-wrapper">
@@ -338,31 +304,31 @@
                                         </a>
                                     </div>
 
-                                    <a href="{% static 'ajax/shop-product-quick-view.html' %}" class="quick-view text-uppercase font-weight-semibold text-2">
+                                    <a href="{% url 'quick_view' product.category.slug product.slug %}" class="quick-view text-uppercase font-weight-semibold text-2">
                                         QUICK VIEW
                                     </a>
-                                    <a href="{% url 'product_detail' %}">
+                                    <a href="{% url 'product_detail' related_product.category.slug related_product.slug %}">
                                         <div class="product-thumb-info-image product-thumb-info-image-effect">
-                                            <img alt="" class="img-fluid" src="{% static 'img/products/product-grey-7.jpg' %}">
+                                            <img alt="" class="img-fluid" src="{{related_product.get_first_image}}">
 
-                                                <img alt="" class="img-fluid" src="{% static 'img/products/product-grey-7-2.jpg' %}">
+                                                <img alt="" class="img-fluid" src="{{related_product.get_first_image}}">
 
                                         </div>
                                     </a>
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <div>
-                                        <a href="{% url 'home' %}" class="d-block text-uppercase text-decoration-none text-color-default text-color-hover-primary line-height-1 text-0 mb-1">accessories</a>
-                                        <h3 class="text-3-5 font-weight-medium font-alternative text-transform-none line-height-3 mb-0"><a href="{% url 'product_detail' %}" class="text-color-dark text-color-hover-primary">Porto Headphone</a></h3>
+                                        <a href="{% url 'products_by_category' related_product.category.slug %}" class="d-block text-uppercase text-decoration-none text-color-default text-color-hover-primary line-height-1 text-0 mb-1">{{related_product.category.name}}</a>
+                                        <h3 class="text-3-5 font-weight-medium font-alternative text-transform-none line-height-3 mb-0"><a href="{% url 'product_detail' related_product.category.slug related_product.slug %}" class="text-color-dark text-color-hover-primary">{{related_product.name}}</a></h3>
                                     </div>
                                     <a href="#" class="text-decoration-none text-color-default text-color-hover-dark text-4"><i class="far fa-heart"></i></a>
                                 </div>
-                                <div title="Rated 5 out of 5">
-                                    <input type="text" class="d-none" value="5" title="" data-plugin-star-rating data-plugin-options="{'displayOnly': true, 'color': 'default', 'size':'xs'}">
+                                <div title="">
+                                    <input type="text" class="rating-loading" value="{{ related_product.review_set.all.0.rate }}" title="" data-plugin-star-rating data-plugin-options="{'displayOnly': true, 'color': 'default', 'size':'xs'}">
                                 </div>
                                 <p class="price text-5 mb-3">
-                                    <span class="sale text-color-dark font-weight-semi-bold">$199,00</span>
-                                    <span class="amount">$99,00</span>
+                                    <span class="sale text-color-dark font-weight-semi-bold">${{related_product.sale_price}}</span>
+                                    <span class="amount">${{related_product.amount_price}}</span>
                                 </p>
                             </div>
                             {% endfor %}
@@ -376,31 +342,31 @@
 
         <div class="products row">
             
-            {% for top_products in '1234' %}
+            {% for top_tag in tags %}
             <div class="col-md-6 col-lg-3">
                 <h4 class="font-weight-semibold text-4 mb-3">FEATURED PRODUCTS</h4>
                 
-                {% for top_products in '123' %}
+                {% for top_product in top_tag.product_set.all %}
                 <div class="product row row-gutter-sm align-items-center mb-4">
                     <div class="col-5 col-md-12 col-lg-5">
                         <div class="product-thumb-info border-0">
-                            <a href="{% url 'product_detail' %}">
+                            <a href="{% url 'product_detail' top_product.category.slug top_product.slug %}">
                                 <div class="product-thumb-info-image">
-                                    <img alt="" class="img-fluid" src="{% static 'img/products/product-grey-1.jpg' %}">
+                                    <img alt="" class="img-fluid" src="{{top_product.get_first_image}}">
 
                                 </div>
                             </a>
                         </div>
                     </div>
                     <div class="col-7 col-md-12 col-lg-7 ms-md-0 ms-lg-0 ps-lg-1 pt-1">
-                        <a href="{% url 'home' %}" class="d-block text-uppercase text-decoration-none text-color-default text-color-hover-primary line-height-1 text-0 mb-2">electronics</a>
-                        <h3 class="text-3-5 font-weight-medium font-alternative text-transform-none line-height-3 mb-0"><a href="{% url 'product_detail' %}" class="text-color-dark text-color-hover-primary text-decoration-none">Photo Camera</a></h3>
-                        <div title="Rated 5 out of 5">
-                            <input type="text" class="d-none" value="5" title="" data-plugin-star-rating data-plugin-options="{'displayOnly': true, 'color': 'dark', 'size':'xs'}">
+                        <a href="{% url 'products_by_category' top_product.category.slug %}" class="d-block text-uppercase text-decoration-none text-color-default text-color-hover-primary line-height-1 text-0 mb-2">{{top_product.category.name}}</a>
+                        <h3 class="text-3-5 font-weight-medium font-alternative text-transform-none line-height-3 mb-0"><a href="{% url 'product_detail' top_product.category.slug top_product.slug %}" class="text-color-dark text-color-hover-primary text-decoration-none">{{top_product.name}}</a></h3>
+                        <div title="">
+                            <input type="text" class="rating-loading" value="{{ top_product.review_set.all.0.rate }}" title="" data-plugin-star-rating data-plugin-options="{'displayOnly': true, 'color': 'dark', 'size':'xs'}">
                         </div>
                         <p class="price text-4 mb-0">
-                            <span class="sale text-color-dark font-weight-semi-bold">$69,00</span>
-                            <span class="amount">$59,00</span>
+                            <span class="sale text-color-dark font-weight-semi-bold">${{top_product.sale_price}}</span>
+                            <span class="amount">${{top_product.amount_price}}</span>
                         </p>
                     </div>
                 </div>
