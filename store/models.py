@@ -50,6 +50,9 @@ class Product(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ('name',)
+
     def check_new_product(self):
 
         new_product_datetime_length = datetime_now - timedelta(weeks=2)
@@ -79,6 +82,32 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+class Cart(models.Model):
+    cart_id = models.CharField(max_length=250, blank=True)
+    date_added = models.DateField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'Cart'
+        ordering = ['date_added',]
+
+    def __str__(self):
+        return self.cart_id
+
+class CartItem(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    active = models.BooleanField(default=True)
+
+    class Meta:
+        db_table = 'CartItem'
+
+    def sub_total(self):
+        return self.product.sale_price * self.quantity
+    
+    def __str__(self):
+        return self.product
+
 class Image(models.Model):
     name = models.CharField(max_length=250)
     image = models.ImageField(upload_to='product')
@@ -103,3 +132,4 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
+    
