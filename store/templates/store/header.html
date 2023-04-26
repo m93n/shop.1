@@ -58,9 +58,11 @@
                                 <div class="header-nav-feature header-nav-features-cart header-nav-features-cart-big d-inline-flex top-2 ms-2">
                                     <a href="{% url 'cart_detail' %}" class="header-nav-features-toggle">
                                         <img src="{% static 'img/icons/icon-cart-big.svg' %}" height="30" alt="" class="header-nav-top-icon-img">
+                                        {% if item_count > 0 %}
                                         <span class="cart-info">
                                             <span class="cart-qty">{{item_count}}</span>
                                         </span>
+                                        {% endif %}
                                     </a>
                                     <div class="header-nav-features-dropdown" id="headerTopCartDropdown">
                                         <ol class="mini-products-list">
@@ -74,7 +76,7 @@
                                                     <p class="qty-price">
                                                          {{item.quantity}}X <span class="price">${{item.product.sale_price}}</span>
                                                     </p>
-                                                    <a href="#" title="Remove This Item" class="btn-remove"><i class="fas fa-times"></i></a>
+                                                    <a href="{% url 'cart_remove_product' item.product.id %}" title="Remove This Item" class="btn-remove"><i class="fas fa-times"></i></a>
                                                 </div>
                                             </li>
                                             {% endfor %}
