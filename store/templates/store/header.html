@@ -59,7 +59,7 @@
                                     <a href="{% url 'cart_detail' %}" class="header-nav-features-toggle">
                                         <img src="{% static 'img/icons/icon-cart-big.svg' %}" height="30" alt="" class="header-nav-top-icon-img">
                                         <span class="cart-info">
-                                            <span class="cart-qty">1</span>
+                                            <span class="cart-qty">{{item_count}}</span>
                                         </span>
                                     </a>
                                     <div class="header-nav-features-dropdown" id="headerTopCartDropdown">
