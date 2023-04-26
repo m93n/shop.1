@@ -106,7 +106,7 @@ class CartItem(models.Model):
         return self.product.sale_price * self.quantity
     
     def __str__(self):
-        return self.product
+        return self.product.name
 
 class Image(models.Model):
     name = models.CharField(max_length=250)

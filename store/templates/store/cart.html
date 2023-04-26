@@ -62,13 +62,15 @@
 										<a href="{% url 'product_detail' cart_item.product.category.slug cart_item.product.slug %}" class="font-weight-semi-bold text-color-dark text-color-hover-primary text-decoration-none">{{cart_item.product.name}}</a>
 									</td>
 									<td class="product-price">
-										<span class="amount font-weight-medium text-color-grey">${{product.sale_price}}</span>
+										<span class="amount font-weight-medium text-color-grey">${{cart_item.product.sale_price}}</span>
 									</td>
 									<td class="product-quantity">
 										<div class="quantity float-none m-0">
 											<input type="button" class="minus text-color-hover-light bg-color-hover-primary border-color-hover-primary" value="-">
-											<input type="text" class="input-text qty text" title="Qty" value="1" name="quantity" min="1" step="1">
-											<input type="button" class="plus text-color-hover-light bg-color-hover-primary border-color-hover-primary" value="+">
+											<input type="text" class="input-text qty text" title="Qty" value="{{cart_item.quantity}}" name="quantity" min="1" step="1">
+											<a href="{% url 'add_cart' cart_item.product.id %}">
+												<input type="button" class="plus text-color-hover-light bg-color-hover-primary border-color-hover-primary" value="+">
+											</a>
 										</div>
 									</td>
 									<td class="product-subtotal text-end">
@@ -167,7 +169,7 @@
 									</div>
 
 									<div class="addtocart-btn-wrapper">
-										<a href="{% url 'cart_detail' %}" class="text-decoration-none addtocart-btn" title="Add to Cart">
+										<a href="{% url 'add_cart' item.product.id %}" class="text-decoration-none addtocart-btn" title="Add to Cart">
 											<i class="icons icon-bag"></i>
 										</a>
 									</div>

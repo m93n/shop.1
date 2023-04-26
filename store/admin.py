@@ -5,6 +5,9 @@ admin.site.register(models.Category)
 admin.site.register(models.Image)
 admin.site.register(models.Review)
 admin.site.register(models.Tag)
+admin.site.register(models.Cart)
+admin.site.register(models.CartItem)
+
 
 class ImageAdmin(admin.TabularInline):
     model = models.Image

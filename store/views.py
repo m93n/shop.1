@@ -34,7 +34,7 @@ def add_cart(request, product_id):
     try:
         cart = models.Cart.objects.get(cart_id=_cart_id(request))
     except models.Cart.DoesNotExist:
-        cart = cart.objects.create(
+        cart = models.Cart.objects.create(
             cart_id = _cart_id(request)
         )
         cart.save()

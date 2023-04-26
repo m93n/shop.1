@@ -64,15 +64,15 @@
                                     </a>
                                     <div class="header-nav-features-dropdown" id="headerTopCartDropdown">
                                         <ol class="mini-products-list">
-                                            {% for product in products %}
+                                            {% for item in cart.cartitem_set.all %}
                                             <li class="item">
-                                                <a href="{% url 'product_detail' product.category.slug product.slug %}" title="{{product.name}}" class="product-image"><img src="{{ product.get_first_image }}" alt="{{product.name}}"></a>
+                                                <a href="{% url 'product_detail' item.product.category.slug item.product.slug %}" title="{{item.product.name}}" class="product-image"><img src="{{ item.product.get_first_image }}" alt="{{item.product.name}}"></a>
                                                 <div class="product-details">
                                                     <p class="product-name">
-                                                        <a href="{% url 'product_detail' product.category.slug product.slug %}">{{product.name}} </a>
+                                                        <a href="{% url 'product_detail' item.product.category.slug item.product.slug %}">{{item.product.name}} </a>
                                                     </p>
                                                     <p class="qty-price">
-                                                         1X <span class="price">$890</span>
+                                                         {{item.quantity}}X <span class="price">${{item.product.sale_price}}</span>
                                                     </p>
                                                     <a href="#" title="Remove This Item" class="btn-remove"><i class="fas fa-times"></i></a>
                                                 </div>
@@ -81,7 +81,7 @@
                                         </ol>
                                         <div class="totals">
                                             <span class="label">Total:</span>
-                                            <span class="price-total"><span class="price">$890</span></span>
+                                            <span class="price-total"><span class="price">${{total}}</span></span>
                                         </div>
                                         <div class="actions">
                                             <a class="btn btn-dark" href="{% url 'cart_detail' %}">View Cart</a>

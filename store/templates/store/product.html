@@ -122,7 +122,7 @@
                             <input type="text" class="input-text qty text" title="Qty" value="1" name="quantity" min="1" step="1">
                             <input type="button" class="plus text-color-hover-light bg-color-hover-primary border-color-hover-primary" value="+">
                         </div>
-                        <a href="{% url 'cart_detail' %}">
+                        <a href="{% url 'add_cart' product.id %}">
                             <button type="button" class="btn btn-dark btn-modern text-uppercase bg-color-hover-primary border-color-hover-primary">Add to cart</button>
                         </a>
                         <hr>
@@ -299,7 +299,7 @@
                                     </div>
 
                                     <div class="addtocart-btn-wrapper">
-                                        <a href="{% url 'cart_detail' %}" class="text-decoration-none addtocart-btn" title="Add to Cart">
+                                        <a href="{% url 'add_cart' related_product.id %}" class="text-decoration-none addtocart-btn" title="Add to Cart">
                                             <i class="icons icon-bag"></i>
                                         </a>
                                     </div>
