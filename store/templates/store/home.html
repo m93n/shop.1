@@ -15,7 +15,7 @@
 								{% if product.check_new_product %}
 								<span class="badge badge-ecommerce badge-success">NEW</span>
 								{% endif %}
-								<span class="badge badge-ecommerce badge-danger">{% divide product.sale_price product.amount_price %}% OFF</span>
+								<span class="badge badge-ecommerce badge-danger">{% percent product.sale_price product.amount_price %}% OFF</span>
 							</div>
 
 							<div class="addtocart-btn-wrapper">
