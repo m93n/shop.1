@@ -16,17 +16,14 @@
 					<li class="text-transform-none text-color-grey-lighten me-2">
 						<a href="{% url 'checkout_page' %}" class="text-decoration-none text-color-grey-lighten text-color-hover-primary">Checkout</a>
 					</li>
-					<li class="text-transform-none text-color-grey-lighten">
-						<a href="{% url 'cart_detail' %}" class="text-decoration-none text-color-grey-lighten text-color-hover-primary">Order Complete</a>
-					</li>
 					{% else %}
 					<li class="text-transform-none text-color-grey-lighten me-2">
 						<a class="text-decoration-none text-color-grey-lighten">Checkout</a>
 					</li>
+					{% endif %}
 					<li class="text-transform-none text-color-grey-lighten">
 						<a class="text-decoration-none text-color-grey-lighten">Order Complete</a>
 					</li>
-					{% endif %}
 				</ul>
 			</div>
 		</div>
@@ -104,7 +101,7 @@
 												</div>
 											</div>
 											{% endif %}
-											<div class="col-md-auto px-0 mb-3 mb-md-0">
+											<div class="col-md-auto px-0">
                                                 <a href="{% url 'home' %}">
 												<button type="button" class="btn btn-light btn-modern text-color-dark bg-color-light-scale-2 text-color-hover-light bg-color-hover-primary text-uppercase text-3 font-weight-bold border-0 border-radius-0 btn-px-4 py-3">Update Cart</button>
                                                 </a>
@@ -185,7 +182,7 @@
 										{% if item.product.check_new_product %}
                                         <span class="badge badge-ecommerce badge-success">NEW</span>
 								        {% endif %}
-                                        <span class="badge badge-ecommerce badge-danger">{% divide item.product.sale_price item.product.amount_price %}% OFF</span>
+                                        <span class="badge badge-ecommerce badge-danger">{% percent item.product.sale_price item.product.amount_price %}% OFF</span>
 									</div>
 
 									<div class="addtocart-btn-wrapper">

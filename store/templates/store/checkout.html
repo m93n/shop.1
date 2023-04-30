@@ -14,9 +14,15 @@
                         <li class="text-transform-none text-color-dark me-2">
                             <a href="{% url 'checkout_page' %}" class="text-decoration-none text-color-primary">Checkout</a>
                         </li>
+                        {% if order %}
                         <li class="text-transform-none text-color-grey-lighten">
-                            <a href="shop-order-complete.html" class="text-decoration-none text-color-grey-lighten text-color-hover-primary">Order Complete</a>
+                            <a href="{% url 'shop_order_complete' order.id %}" class="text-decoration-none text-color-grey-lighten text-color-hover-primary">Order Complete</a>
                         </li>
+                        {% else %}
+                        <li class="text-transform-none text-color-grey-lighten">
+                            <a class="text-decoration-none text-color-grey-lighten">Order Complete</a>
+                        </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
@@ -287,22 +293,14 @@
                                                 <strong class="text-color-dark">Product</strong>
                                             </td>
                                         </tr>
+                                        {% for cart_item in cart_items %}
                                         <tr>
                                             <td>
-                                                <strong class="d-block text-color-dark line-height-1 font-weight-semibold">Black Porto Smartwatch <span class="product-qty">x1</span></strong>
+                                                <strong class="d-block text-color-dark line-height-1 font-weight-semibold">{{ cart_item.product }}<span class="product-qty">x{{ oredr_item.quantity }}</span></strong>
                                                 <span class="text-1">COLOR BLACK</span>
                                             </td>
                                             <td class="text-end align-top">
-                                                <span class="amount font-weight-medium text-color-grey">$15</span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="border-top-0 pt-0">
-                                                <strong class="d-block text-color-dark line-height-1 font-weight-semibold">Black Porto Smartwatch <span class="product-qty">x1</span></strong>
-                                                <span class="text-1">COLOR BLACK</span>
-                                            </td>
-                                            <td class="border-top-0 text-end align-top pt-0">
-                                                <span class="amount font-weight-medium text-color-grey">$15</span>
+                                                <span class="amount font-weight-medium text-color-grey">${{ cart_item.product.sale_price }}</span>
                                             </td>
                                         </tr>
                                         <tr class="cart-subtotal">
@@ -310,9 +308,10 @@
                                                 <strong class="text-color-dark">Subtotal</strong>
                                             </td>
                                             <td class="border-top-0 text-end">
-                                                <strong><span class="amount font-weight-medium">$431</span></strong>
+                                                <strong><span class="amount font-weight-medium">${{ cart_item.sub_total }}</span></strong>
                                             </td>
                                         </tr>
+                                        {% endfor %}
                                         <tr class="shipping">
                                             <td colspan="2">
                                                 <strong class="d-block text-color-dark mb-2">Shipping</strong>
@@ -338,7 +337,7 @@
                                                 <strong class="text-color-dark text-3-5">Total</strong>
                                             </td>
                                             <td class="text-end">
-                                                <strong class="text-color-dark"><span class="amount text-color-dark text-5">$431</span></strong>
+                                                <strong class="text-color-dark"><span class="amount text-color-dark text-5">${{total}}</span></strong>
                                             </td>
                                         </tr>
                                         <tr class="payment-methods">
@@ -364,6 +363,22 @@
                                         </tr>
                                     </tbody>
                                 </table>
+                                <form class="" action="checkout_page" method="POST">
+                                    {% csrf_token %}
+                                    <script
+                                    src="https://checkout.stripe.com/checkout.js"
+                                    class="stripe-button"
+                                    data-key="{{ data_key }}"
+                                    data-amount="{{stripe_total}}"
+                                    data-name="Z-Store"
+                                    data-description="{{ description }}"
+                                    data-locale="auto"
+                                    data-currency="usd"
+                                    data-shipping-address="true"
+                                    data-billing-address="true"
+                                    data-zip-code="true">
+                                    </script>
+                                  </form>
                                 <button type="submit" class="btn btn-dark btn-modern w-100 text-uppercase bg-color-hover-primary border-color-hover-primary border-radius-0 text-3 py-3">Place Order <i class="fas fa-arrow-right ms-2"></i></button>
                             </div>
                         </div>
