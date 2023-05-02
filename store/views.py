@@ -2,8 +2,12 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
 from django.conf import settings
+from django.contrib.auth.models import Group, User
+from django.contrib.auth import login, authenticate, logout
 import stripe
 from store import models
+from store.forms import SignUpForm, SignInForm
+
 
 def home(request, category_slug=None):
     category_page = None
@@ -187,3 +191,44 @@ def quick_view(request, category_slug, product_slug):
         raise e
     
     return render(request, 'store/ajax/shop-product-quick-view.html', {'product':product})
+
+def signupView(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            signup_user = User.objects.get(username=username)
+            customer_group = Group.objects.get(name='Customer')
+            customer_group.user_set.add(signup_user)
+            login(request, signup_user)
+        
+    else:
+        form = SignUpForm
+
+    return render(request, 'store\SignUp.html', {'form': form})
+
+def signInView(request):
+    if request.method == 'POST':
+        form = SignInForm(request.POST)
+        if form.is_valid:
+            username = request.POST['username']
+            password = request.POST['password']
+            user = authenticate(username=username, password=password)
+
+            if user is not None:
+                login(request, user)
+                return redirect('home')
+
+            else:
+                return redirect('signup')
+    else:
+        form = SignInForm()
+    
+    return render(request, 'store/signIn.html', {'form': form})
+
+def signOutView(request):
+    logout(request)
+
+    return redirect('signin')
