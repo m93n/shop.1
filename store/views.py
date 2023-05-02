@@ -173,8 +173,9 @@ def checkout(request):
     return render(request, 'store\checkout.html', dict(cart_items=cart_items, order=order_details, data_key=data_key, stripe_total=stripe_total, description=description))
 
 def shop_order_complete(request, order_id):
-    order = models.Order.objects.get(id=order_id)
-    order_items = models.OrderItem.objects.filter(order=order)
+    if order_id:
+        order = get_object_or_404(models.Order, id=order_id)
+        order_items = models.OrderItem.objects.filter(order=order)
 
     return render(request, 'store\shop-order-complete.html', dict(order=order, order_items=order_items))
 

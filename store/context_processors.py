@@ -13,6 +13,7 @@ def populer_tags(requeset):
 
 
 def cart_item_counter_and_total(request):
+    cart=None
     item_count = 0
     total=0
     if 'admin' in request.path:
