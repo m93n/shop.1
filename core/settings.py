@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # project apps
     'store',
+    'stripe',
 ]
 
 MIDDLEWARE = [
@@ -66,6 +67,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'store.context_processors.menu_link',
+                'store.context_processors.cart_item_counter_and_total',
             ],
         },
     },
@@ -131,3 +133,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'media')
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Stripe
+STRIPE_PUBLISH_KEY = 'pk_test_51JCpHRK5JOibsIP8bCrXjFA4yjugpdGrFJ4eTXkrhJoFxRWjBd4FlYN26sPXvq7C8QkukUTWdbNLhH1jnnb3e9tg00Gql3XeOV'
+STRIPE_SECRET_KEY = ''

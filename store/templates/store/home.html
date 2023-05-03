@@ -1,6 +1,6 @@
 {% extends 'store/base.html' %}
 {% load static %}
-{% load custome_tag %}
+{% load custom_tag %}
 {% block content %}
 <div role="main" class="main shop pt-4">
 	<div class="container">
@@ -15,11 +15,11 @@
 								{% if product.check_new_product %}
 								<span class="badge badge-ecommerce badge-success">NEW</span>
 								{% endif %}
-								<span class="badge badge-ecommerce badge-danger">{% divide product.sale_price product.amount_price %}% OFF</span>
+								<span class="badge badge-ecommerce badge-danger">{% percent product.sale_price product.amount_price %}% OFF</span>
 							</div>
 
 							<div class="addtocart-btn-wrapper">
-								<a href="{% url 'cart_detail' %}" class="text-decoration-none addtocart-btn" title="Add to Cart">
+								<a href="{% url 'add_cart' product.id %}" class="text-decoration-none addtocart-btn" title="Add to Cart">
 									<i class="icons icon-bag"></i>
 								</a>
 							</div>
