@@ -6,6 +6,9 @@ from datetime import datetime, timedelta
 import pytz
 import PIL.Image
 
+# change email field of default User model to unique=True
+User._meta.get_field('email')._unique = True
+
 datetime_now = datetime.now(tz=pytz.utc)
 
 RATE_CHOICES = [
@@ -190,9 +193,6 @@ class Profile(models.Model):
         super().save(*args, **kwargs)
     
         with PIL.Image.open(self.avatar.path) as img:
-            print("##############################")
-            print(img)
-            print("##############################")
             if img.height > 400 or img.width > 400:
                 output_size = (400, 400)
 
