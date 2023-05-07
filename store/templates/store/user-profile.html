@@ -22,13 +22,26 @@
     <div class="container pt-3 pb-2">
 
         <div class="row pt-2">
-            <!-- {% if messages %}
+            {% if messages %}
                 {% for message in messages %}
-                    <div class="alert alert-{{message.tags}}">
-                        {{message}}.
-                    </div>
+                    {% if message.tags == 'success' %}
+                        <div class="alert alert-success">
+                            {{message}}.
+                        </div>
+                    {% endif %}
                 {% endfor %}
-            {% endif %} -->
+            {% endif %}
+            
+            {% if user_form.errors %}
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <div id="form_errors">
+                        {% for key, value in user_form.errors.items %}
+                            <strong><i class="fas fa-exclamation-triangle"></i>{{ value }}</strong>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
             <div class="col-lg-3 mt-4 mt-lg-0">
 
                 <div class="d-flex justify-content-center mb-4">
@@ -55,7 +68,7 @@
             </div>
             <div class="col-lg-9">
 
-                <form role="form" class="needs-validation">
+                <form method="POST" enctype="multipart/form-data" role="form" class="needs-validation">
                     {% csrf_token %}
                     <div class="form-group row">
                         <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">First name</label>

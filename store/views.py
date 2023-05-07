@@ -236,23 +236,20 @@ def signOutView(request):
     return redirect('signin')
 
 @login_required
-def user_prodile(request):
+def user_profile(request):
     user_form = UserUpdateForm(instance=request.user)
     profile_form = ProfileUpdateForm(instance=request.user.profile)
 
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST, instance=request.user)
-        profile_form = ProfileUpdateForm(request.POST, request.Files, instance=request.user.profile)
+        profile_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
 
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
 
             messages.success(request, 'Your profile is updated successfully')
-            return redirect(to='user_profile')
-        
-        else:
-            messages.error(request, 'Error updating you profile')
 
+            return redirect(to='user_profile')
     
     return render(request, 'store/user-profile.html', dict(user_form=user_form, profile_form=profile_form))
