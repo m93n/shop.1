@@ -28,7 +28,7 @@
                     <div class="thumb-gallery-thumbs owl-carousel owl-theme manual thumb-gallery-thumbs">
                         {% for image in product.image_set.all %}
                         <div class="cur-pointer">
-                            <img alt="" class="img-fluid" src="{% static 'img/products/product-grey-7.jpg' %}">
+                            <img alt="" class="img-fluid" src="{{ image.image.url }}">
                         </div>
                         {% endfor %}
                     </div>
