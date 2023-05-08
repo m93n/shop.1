@@ -42,17 +42,19 @@
                     </div>
                 </div>
             {% endif %}
+            {{profile_form.avatar.url}}
             <div class="col-lg-3 mt-4 mt-lg-0">
+                <form method="POST" enctype="multipart/form-data" role="form" class="needs-validation">
 
                 <div class="d-flex justify-content-center mb-4">
                     <div class="profile-image-outer-container">
                         <div class="profile-image-inner-container bg-color-primary">
-                            <img src="{{ profile_form.avatar.url }}">
+                            <img src="{{ user.profile.avatar.url }}">
                             <span class="profile-image-button bg-color-dark">
                                 <i class="fas fa-camera text-light"></i>
                             </span>
                         </div>
-                        <input type="file" id="file" class="form-control profile-image-input">
+                        <input type="file" name="avatar" id="avatar" class="form-control profile-image-input">
                     </div>
                 </div>
 
@@ -68,7 +70,6 @@
             </div>
             <div class="col-lg-9">
 
-                <form method="POST" enctype="multipart/form-data" role="form" class="needs-validation">
                     {% csrf_token %}
                     <div class="form-group row">
                         <label class="col-lg-3 col-form-label form-control-label line-height-9 pt-2 text-2 required">First name</label>
