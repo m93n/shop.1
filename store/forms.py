@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 
+from store.models import Profile
+
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=100, required=True)
     last_name = forms.CharField(max_length=100, required=True)
@@ -31,3 +33,21 @@ class SignInForm(AuthenticationForm):
 
         self.fields['username'].widget.attrs.update({'class': 'form-control form-control-lg text-4'})
         self.fields['password'].widget.attrs.update({'class': 'form-control form-control-lg text-4'})
+
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'username','email')
+    
+    def __init__(self, *args, **kwargs):
+        super(UserUpdateForm, self).__init__(*args, **kwargs)
+
+        self.fields['first_name'].widget.attrs.update({'class': 'form-control text-3 h-auto py-2'})
+        self.fields['last_name'].widget.attrs.update({'class': 'form-control text-3 h-auto py-2'})
+        self.fields['email'].widget.attrs.update({'class': 'form-control text-3 h-auto py-2'})
+        self.fields['username'].widget.attrs.update({'class': 'form-control text-3 h-auto py-2'})
+        
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['avatar'] 
