@@ -68,6 +68,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'store.context_processors.menu_link',
                 'store.context_processors.cart_item_counter_and_total',
+                'store.context_processors.populer_tags',
             ],
         },
     },
