@@ -129,6 +129,7 @@ class OrderItem(models.Model):
     product = models.CharField(max_length=250)
     quantity = models.IntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='USD Price')
+    choosen_information = models.TextField(help_text="string of json of extra information of item")
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
 
     class Meta:
@@ -187,4 +188,18 @@ class Profile(models.Model):
                 img.thumbnail(output_size)
                 
                 img.save(self.avatar.path) 
-    
+
+class AdditionalInformation(models.Model):
+    name = models.CharField(max_length=150)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user_choose = models.BooleanField() # it will say each info must choosen by user or its just static info
+
+    def __str__(self):
+        return self.name
+
+class AdditionalInformationValue(models.Model):
+    name = models.CharField(max_length=250)
+    additional_information = models.ForeignKey(AdditionalInformation, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
