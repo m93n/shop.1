@@ -1,2 +1,5 @@
 # shop.1
-my first django project that i did 100% by myself
+My first Django project that I did 100% by myself
+
+--------------------------
+Frontend is Porto templates from https://themeforest.net/
