@@ -9,6 +9,7 @@ from django.contrib import messages
 import stripe
 from store import models
 from store.forms import SignUpForm, SignInForm, UserUpdateForm, ProfileUpdateForm
+from store.querysets import get_related_products
 
 
 def home(request, category_slug=None):
@@ -26,11 +27,12 @@ def home(request, category_slug=None):
 def product(request, category_slug, product_slug):
     try:
         product = models.Product.objects.get(slug=product_slug, category__slug=category_slug)
+        related_products = get_related_products(product)
 
     except Exception as e:
         raise e
 
-    return render(request, 'store\product.html', {'product':product})
+    return render(request, 'store\product.html', {'product':product, "related_products": related_products})
 
 def _cart_id(request):
     cart = request.session.session_key

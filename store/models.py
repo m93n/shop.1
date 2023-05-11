@@ -52,7 +52,7 @@ class Product(models.Model):
     stock = models.IntegerField()
     sku = models.IntegerField(blank=True)
     available = models.BooleanField(default=True)
-    tag = models.ManyToManyField('Tag')
+    tags = models.ManyToManyField('Tag')
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 

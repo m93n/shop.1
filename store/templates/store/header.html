@@ -104,7 +104,9 @@
                                         </div>
                                         <div class="actions">
                                             <a class="btn btn-dark" href="{% url 'cart_detail' %}">View Cart</a>
+                                            {% if item_count > 0 %}
                                             <a class="btn btn-primary" href="{% url 'checkout_page' %}">Checkout</a>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
