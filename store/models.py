@@ -11,19 +11,6 @@ User._meta.get_field('email')._unique = True
 
 datetime_now = datetime.now(tz=pytz.utc)
 
-RATE_CHOICES = [
-    ("0.5",0.5),
-    ("1",1),
-    ("1.5",1.5),
-    ("2",2),
-    ("2.5",2.5),
-    ("3",3),
-    ("3.5",3.5),
-    ("4",4),
-    ("4.5",4.5),
-    ("5",5),
-]
-
 class Category(models.Model):
     name = models.CharField(max_length=250, unique=True)
     slug = models.CharField(max_length=250, unique=True)
@@ -53,6 +40,7 @@ class Product(models.Model):
     sku = models.IntegerField(blank=True)
     available = models.BooleanField(default=True)
     tags = models.ManyToManyField('Tag')
+    avarage_rate = models.DecimalField(max_digits=2, decimal_places=1)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -165,8 +153,8 @@ class Review(models.Model):
     name = models.CharField(max_length=250)
     email = models.EmailField()
     review = models.TextField()
-    rate = models.CharField(max_length=4, choices=RATE_CHOICES)
-    created = models.DateTimeField()
+    rate = models.DecimalField(max_digits=2, decimal_places=1)
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.product.name
