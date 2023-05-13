@@ -14,7 +14,8 @@ Theme Version:	9.7.0
     $( document ).on('click', '.quantity .plus',function(){
         var $qty=$(this).parents('.quantity').find('.qty');
         var currentVal = parseInt($qty.val());
-        if (!isNaN(currentVal)) {
+        var max = parseInt($qty.max());
+        if (!isNaN(currentVal) && currentVal < max) {
             $qty.val(currentVal + 1);
         }
     });
