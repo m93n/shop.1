@@ -181,30 +181,18 @@
                         <div class="tab-pane px-0 py-3" id="productInfo">
                             <table class="table table-striped m-0">
                                 <tbody>
+                                    {% for info in product.additionalinformation_set.all %}
                                     <tr>
                                         <th class="border-top-0">
-                                            Size:
+                                            {{info.name}}:
                                         </th>
                                         <td class="border-top-0">
-                                            Unique
+                                        {% for value in info.additionalinformationvalue_set.all %}
+                                            {{value.name}} ,
+                                        {% endfor %}
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <th>
-                                            Colors
-                                        </th>
-                                        <td>
-                                            Red, Blue
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th>
-                                            Material
-                                        </th>
-                                        <td>
-                                            100% Leather
-                                        </td>
-                                    </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>
