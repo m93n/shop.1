@@ -31,7 +31,7 @@
 
 				<div class="pb-0 clearfix d-flex align-items-center">
 					<div title="" class="float-start">
-						<input type="text" class="rating-loading" value="{{ product.review_set.all.0.rate }}"" title="" data-plugin-star-rating data-plugin-options="{'displayOnly': true, 'color': 'primary', 'size':'xs'}">
+						<input type="text" class="rating-loading" value="{{ product.review_set.all.0.rate }}" title="" data-plugin-star-rating data-plugin-options="{'displayOnly': true, 'color': 'primary', 'size':'xs'}">
 					</div>
 
 					<div class="review-num">
@@ -64,44 +64,36 @@
 				</ul>
 
 
-				<form enctype="multipart/form-data" method="post" class="cart" action="{% url 'cart_detail' %}">
+				<form enctype="multipart/form-data" method="post" class="cart" action="{% url 'add_cart' product.id %}">
+					{% csrf_token %}
 					<table class="table table-borderless" style="max-width: 300px;">
 						<tbody>
+							{% for info in product.additionalinformation_set.all %}
+							{% if info.user_choose %}
 							<tr>
-								<td class="align-middle text-2 px-0 py-2">SIZE:</td>
+								<td class="align-middle text-2 px-0 py-2 text-uppercase">{{info.name}}:</td>
 								<td class="px-0 py-2">
 									<div class="custom-select-1">
-										<select name="size" class="form-control form-select text-1 h-auto py-2">
+										<select id='id_{{info.name}}' name='{{info.name}}' class="form-control form-select text-1 h-auto py-2">
 											<option value="">PLEASE CHOOSE</option>
-											<option value="blue">Small</option>
-											<option value="red">Normal</option>
-											<option value="green">Big</option>
+											{% for value in info.additionalinformationvalue_set.all %}
+												<option value="{{value.name}}">{{value.name}}</option>
+											{% endfor %}
 										</select>
 									</div>
 								</td>
 							</tr>
-							<tr>
-								<td class="align-middle text-2 px-0 py-2">COLOR:</td>
-								<td class="px-0 py-2">
-									<div class="custom-select-1">
-										<select name="color" class="form-control form-select text-1 h-auto py-2">
-											<option value="">PLEASE CHOOSE</option>
-											<option value="blue">Blue</option>
-											<option value="red">Red</option>
-											<option value="green">Green</option>
-										</select>
-									</div>
-								</td>
-							</tr>
+							{% endif %}
+						{% endfor %}
 						</tbody>
 					</table>
 					<hr>
 					<div class="quantity quantity-lg">
 						<input type="button" class="minus text-color-hover-light bg-color-hover-primary border-color-hover-primary" value="-">
-						<input type="text" class="input-text qty text" title="Qty" value="1" name="quantity" min="1" step="1">
+						<input type="text" class="input-text qty text" title="Qty" value="1" name="quantity" max="{{product.stock}}" min="1" step="1">
 						<input type="button" class="plus text-color-hover-light bg-color-hover-primary border-color-hover-primary" value="+">
 					</div>
-					<button href="{% url 'cart_detail' %}" class="btn btn-dark btn-modern text-uppercase bg-color-hover-primary border-color-hover-primary">{% csrf_token %} Add to cart</button>
+					<input type="submit" value="Add to cart" class="btn btn-dark btn-modern text-uppercase bg-color-hover-primary border-color-hover-primary">
 					<hr>
 				</form>
 
