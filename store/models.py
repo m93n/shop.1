@@ -40,7 +40,7 @@ class Product(models.Model):
     sku = models.IntegerField(blank=True)
     available = models.BooleanField(default=True)
     tags = models.ManyToManyField('Tag')
-    avarage_rate = models.DecimalField(max_digits=2, decimal_places=1)
+    avarage_rate = models.DecimalField(max_digits=2, decimal_places=1, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -144,7 +144,7 @@ class OrderItem(models.Model):
 
 class Image(models.Model):
     name = models.CharField(max_length=250)
-    image = models.ImageField(upload_to='product')
+    image = models.ImageField(upload_to='product', default='product-grey-7.jpg')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     
     def __str__(self):

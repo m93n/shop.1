@@ -17,7 +17,7 @@ class AdditionalInformationAdmin(NestedStackedInline):
         AdditionalInformationValueAdmin,
     ]
 
-class ImageAdmin(admin.TabularInline):
+class ImageAdmin(NestedTabularInline):
     model = models.Image
 
 @admin.register(models.Product)

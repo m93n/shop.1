@@ -7,16 +7,30 @@ from django.contrib.auth.models import Group, User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
+from django.db.models import Q
 import stripe
 from store import models
 from store.forms import SignUpForm, SignInForm, UserUpdateForm, ProfileUpdateForm, CartItemForm
 from store.querysets import get_related_products
 
+from django.db.models import CharField
+from django.db.models.functions import Lower
+
+CharField.register_lookup(Lower)
+
 
 def home(request, category_slug=None):
     category_page = None
     products = None
-    if category_slug != None:
+    search_product = request.GET.get('search')
+    search_category = request.GET.get('category') or ''
+    
+    if search_product:
+        products = models.Product.objects.filter(Q(name__lower__icontains=search_product) |
+                                                Q(tags__name__lower__icontains=search_product)).filter(
+                                                Q(category__name__exact=search_category)).order_by("-created").distinct()
+
+    elif category_slug != None:
         category_page = get_object_or_404(models.Category ,slug=category_slug)
         products = models.Product.objects.filter(category=category_page, available=True)
     
