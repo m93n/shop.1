@@ -1,21 +1,38 @@
 from django.contrib import admin
+from nested_inline.admin import NestedTabularInline, NestedModelAdmin, NestedStackedInline
 from store import models
 
 admin.site.register(models.Category)
 admin.site.register(models.Image)
-admin.site.register(models.Review)
 admin.site.register(models.Tag)
 admin.site.register(models.Profile)
 
-class ImageAdmin(admin.TabularInline):
+class AdditionalInformationValueAdmin(NestedTabularInline):
+    model = models.AdditionalInformationValue
+
+class AdditionalInformationAdmin(NestedStackedInline):
+    model = models.AdditionalInformation
+
+    inlines = [
+        AdditionalInformationValueAdmin,
+    ]
+
+class ImageAdmin(NestedTabularInline):
     model = models.Image
 
 @admin.register(models.Product)
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(NestedModelAdmin):
 
+    readonly_fields = ['avarage_rate', 'created']
     inlines = [
         ImageAdmin,
+        AdditionalInformationAdmin,
     ]
+
+@admin.register(models.Review)
+class ReviewAdmin(admin.ModelAdmin):
+
+    readonly_fields = ['created']
 
 class OrderItemAdmin(admin.TabularInline):
     model = models.OrderItem
@@ -56,3 +73,4 @@ class OrderAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         return False
+    

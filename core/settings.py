@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # project apps
     'store',
     'stripe',
+    "nested_inline",
 ]
 
 MIDDLEWARE = [

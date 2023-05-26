@@ -1,3 +1,4 @@
+from django.forms import ValidationError
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
@@ -6,16 +7,30 @@ from django.contrib.auth.models import Group, User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
+from django.db.models import Q
 import stripe
 from store import models
-from store.forms import SignUpForm, SignInForm, UserUpdateForm, ProfileUpdateForm
+from store.forms import SignUpForm, SignInForm, UserUpdateForm, ProfileUpdateForm, CartItemForm
 from store.querysets import get_related_products
+
+from django.db.models import CharField
+from django.db.models.functions import Lower
+
+CharField.register_lookup(Lower)
 
 
 def home(request, category_slug=None):
     category_page = None
     products = None
-    if category_slug != None:
+    search_product = request.GET.get('search')
+    search_category = request.GET.get('category') or ''
+    
+    if search_product:
+        products = models.Product.objects.filter(Q(name__lower__icontains=search_product) |
+                                                Q(tags__name__lower__icontains=search_product)).filter(
+                                                Q(category__name__exact=search_category)).order_by("-created").distinct()
+
+    elif category_slug != None:
         category_page = get_object_or_404(models.Category ,slug=category_slug)
         products = models.Product.objects.filter(category=category_page, available=True)
     
@@ -24,7 +39,7 @@ def home(request, category_slug=None):
     
     return render(request, 'store\home.html', {'category': category_page, 'products': products})
 
-def product(request, category_slug, product_slug):
+def productView(request, category_slug, product_slug):
     try:
         product = models.Product.objects.get(slug=product_slug, category__slug=category_slug)
         related_products = get_related_products(product)
@@ -49,19 +64,37 @@ def add_cart(request, product_id):
             cart_id = _cart_id(request)
         )
         cart.save()
-    
-    try:
-        cart_item = models.CartItem.objects.get(product=product, cart=cart)
-        if cart_item.quantity < cart_item.product.stock:
-            cart_item.quantity += 1
-            cart_item.save()
-    except models.CartItem.DoesNotExist:
-        cart_item = models.CartItem.objects.create(
-            product=product,
-            cart=cart,
-            quantity = 1,
-        )
-        cart.save()
+
+    if request.method == "POST":
+        cart_item_form = CartItemForm(request.POST, instance=product)
+
+        if cart_item_form.is_valid():
+            cart_item_form.save(cart=cart)
+        
+        else:
+            related_products = get_related_products(product)
+            return render(request, 'store\product.html', {'product':product, "related_products": related_products, 'form':cart_item_form})
+
+
+    else:
+        choosen_informations = dict()
+        for info in models.AdditionalInformation.objects.filter(product=product):
+            info_value = info.additionalinformationvalue_set.filter(default=True)[0]
+            choosen_informations[info.name]= info_value
+        try:
+            cart_item = models.CartItem.objects.get(product=product, cart=cart)
+            if cart_item.quantity < cart_item.product.stock:
+                cart_item.quantity += 1
+                choosen_informations = choosen_informations
+                cart_item.save()
+        except models.CartItem.DoesNotExist:
+            cart_item = models.CartItem.objects.create(
+                product=product,
+                cart=cart,
+                quantity = 1,
+                choosen_informations = choosen_informations
+            )
+            cart.save()
 
     return redirect('cart_detail')
 
@@ -161,6 +194,7 @@ def checkout(request):
                         product=order_item.product.name,
                         quantity=order_item.quantity,
                         price=order_item.product.sale_price,
+                        choosen_informations=order_item.choosen_informations,
                         order=order_details
                     )
                     or_item.save()
@@ -209,7 +243,7 @@ def signupView(request):
             login(request, signup_user)
         
     else:
-        form = SignUpForm
+        form = SignUpForm()
 
     return render(request, 'store\SignUp.html', {'form': form})
 

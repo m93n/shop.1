@@ -11,19 +11,6 @@ User._meta.get_field('email')._unique = True
 
 datetime_now = datetime.now(tz=pytz.utc)
 
-RATE_CHOICES = [
-    ("0.5",0.5),
-    ("1",1),
-    ("1.5",1.5),
-    ("2",2),
-    ("2.5",2.5),
-    ("3",3),
-    ("3.5",3.5),
-    ("4",4),
-    ("4.5",4.5),
-    ("5",5),
-]
-
 class Category(models.Model):
     name = models.CharField(max_length=250, unique=True)
     slug = models.CharField(max_length=250, unique=True)
@@ -53,6 +40,7 @@ class Product(models.Model):
     sku = models.IntegerField(blank=True)
     available = models.BooleanField(default=True)
     tags = models.ManyToManyField('Tag')
+    avarage_rate = models.DecimalField(max_digits=2, decimal_places=1, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -103,6 +91,7 @@ class CartItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     quantity = models.IntegerField()
+    choosen_informations = models.TextField(help_text="string of json of extra information of item")
     active = models.BooleanField(default=True)
 
     class Meta:
@@ -141,6 +130,7 @@ class OrderItem(models.Model):
     product = models.CharField(max_length=250)
     quantity = models.IntegerField()
     price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='USD Price')
+    choosen_informations = models.TextField(help_text="string of json of extra information of item")
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
 
     class Meta:
@@ -154,7 +144,7 @@ class OrderItem(models.Model):
 
 class Image(models.Model):
     name = models.CharField(max_length=250)
-    image = models.ImageField(upload_to='product')
+    image = models.ImageField(upload_to='product', default='product-grey-7.jpg')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     
     def __str__(self):
@@ -165,8 +155,8 @@ class Review(models.Model):
     name = models.CharField(max_length=250)
     email = models.EmailField()
     review = models.TextField()
-    rate = models.CharField(max_length=4, choices=RATE_CHOICES)
-    created = models.DateTimeField()
+    rate = models.DecimalField(max_digits=2, decimal_places=1)
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.product.name
@@ -199,4 +189,19 @@ class Profile(models.Model):
                 img.thumbnail(output_size)
                 
                 img.save(self.avatar.path) 
-    
+
+class AdditionalInformation(models.Model):
+    name = models.CharField(max_length=150)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user_choose = models.BooleanField() # it will say each info must choosen by user or its just static info
+
+    def __str__(self):
+        return self.name
+
+class AdditionalInformationValue(models.Model):
+    name = models.CharField(max_length=250)
+    additional_information = models.ForeignKey(AdditionalInformation, on_delete=models.CASCADE)
+    default = models.BooleanField()
+
+    def __str__(self):
+        return self.name
