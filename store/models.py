@@ -144,7 +144,7 @@ class OrderItem(models.Model):
 
 class Image(models.Model):
     name = models.CharField(max_length=250)
-    image = models.ImageField(upload_to='product', default='product-grey-7.jpg')
+    image = models.ImageField(upload_to='product', default='product/product-grey-7.jpg')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     
     def __str__(self):
@@ -171,7 +171,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     avatar = models.ImageField(
-        default='avatar.jpg', 
+        default='profile/avatar.jpg', 
         upload_to='profile'
     )
 
