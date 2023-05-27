@@ -6,7 +6,7 @@
 	<div class="container">
 		<div class="masonry-loader masonry-loader-showing">
 			<div class="row products product-thumb-info-list" data-plugin-masonry data-plugin-options="{'layoutMode': 'fitRows'}">
-				{% for product in products %}
+				{% for product in page_obj %}
 				<div class="col-12 col-sm-6 col-lg-3">
 					<div class="product mb-0">
 						<div class="product-thumb-info border-0 mb-3">
@@ -54,14 +54,41 @@
 				</div>
 				{% endfor %}
 			</div>
+			<h1>{{ page_obj.has_next }}</h1>
 			<div class="row mt-4">
 				<div class="col">
 					<ul class="pagination float-end">
-						<li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-left"></i></a></li>
-						<li class="page-item active"><a class="page-link" href="#">1</a></li>
-						<li class="page-item"><a class="page-link" href="#">2</a></li>
-						<li class="page-item"><a class="page-link" href="#">3</a></li>
-						<li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-right"></i></a></li>
+						{% if page_obj.has_previous %}
+							<li class="page-item">
+								<a class="page-link" href="{% if category_page %} 
+																{% url 'products_by_category_by_page' category_page.slug page_obj.previous_page_number %}
+															{% else %}
+															    {% url 'products_by_page' page_obj.previous_page_number %}
+															{% endif %}">
+									<i class="fas fa-angle-left"></i></a></li>
+						{% endif%}
+						{% for page_number in page_obj.adjusted_elided_pages %}
+							{% if page_number != page_obj.paginator.ELLIPSIS %}
+
+								<li class="page-item {% if page_number == page_obj.number %}active{% endif %}">
+									<a class="page-link" href="{% if category_page %} 
+																{% url 'products_by_category_by_page' category_page.slug page_number %}
+															{% else %}
+																{% url 'products_by_page' page_number %}
+															{% endif %}">
+									{{page_number}}</a></li>
+							
+								{% endif %}
+						{% endfor %}
+						{% if page_obj.has_next %}
+							<li class="page-item">
+								<a class="page-link" href="{% if category_page %} 
+															{% url 'products_by_category_by_page' category_page.slug page_obj.next_page_number %}
+														{% else %}
+															{% url 'products_by_page' page_obj.next_page_number %}
+														{% endif %}">
+							   <i class="fas fa-angle-right"></i></a></li>
+						{% endif%}
 					</ul>
 				</div>
 			</div>
