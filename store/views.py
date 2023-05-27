@@ -1,4 +1,4 @@
-from django.forms import ValidationError
+from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect
@@ -19,7 +19,7 @@ from django.db.models.functions import Lower
 CharField.register_lookup(Lower)
 
 
-def home(request, category_slug=None):
+def home(request, category_slug=None, page=1):
     category_page = None
     products = None
     search_product = request.GET.get('search')
@@ -37,7 +37,13 @@ def home(request, category_slug=None):
     else:
         products = models.Product.objects.all().filter(available=True)
     
-    return render(request, 'store\home.html', {'category': category_page, 'products': products})
+    paginator = Paginator(products, per_page=4, orphans=3)
+    page_object = paginator.get_page(page)
+    page_object.adjusted_elided_pages = paginator.get_elided_page_range(page, on_each_side=2, on_ends=2)
+    
+    context = {'category': category_page, 'page_obj': page_object}
+    
+    return render(request, 'store\home.html', context=context)
 
 def productView(request, category_slug, product_slug):
     try:
