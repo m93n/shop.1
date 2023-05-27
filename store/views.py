@@ -43,7 +43,7 @@ def home(request, category_slug=None, page=1):
     
     context = {'category': category_page, 'page_obj': page_object}
     
-    return render(request, 'store\home.html', context=context)
+    return render(request, 'store/home.html', context=context)
 
 def productView(request, category_slug, product_slug):
     try:
@@ -53,7 +53,7 @@ def productView(request, category_slug, product_slug):
     except Exception as e:
         raise e
 
-    return render(request, 'store\product.html', {'product':product, "related_products": related_products})
+    return render(request, 'store/product.html', {'product':product, "related_products": related_products})
 
 def _cart_id(request):
     cart = request.session.session_key
@@ -79,7 +79,7 @@ def add_cart(request, product_id):
         
         else:
             related_products = get_related_products(product)
-            return render(request, 'store\product.html', {'product':product, "related_products": related_products, 'form':cart_item_form})
+            return render(request, 'store/product.html', {'product':product, "related_products": related_products, 'form':cart_item_form})
 
 
     else:
@@ -114,7 +114,7 @@ def cart_detail(request, total=0, counter=0, cart_items=None):
     except ObjectDoesNotExist:
         pass
 
-    return render(request, 'store\cart.html', dict(cart_items=cart_items, total=total, counter=counter))
+    return render(request, 'store/cart.html', dict(cart_items=cart_items, total=total, counter=counter))
 
 def cart_remove(request, product_id):
     cart = models.Cart.objects.get(cart_id=_cart_id(request))
@@ -218,14 +218,14 @@ def checkout(request):
         except stripe.error.CardError as e:
             return False, e
 
-    return render(request, 'store\checkout.html', dict(cart_items=cart_items, order=order_details, data_key=data_key, stripe_total=stripe_total, description=description))
+    return render(request, 'store/checkout.html', dict(cart_items=cart_items, order=order_details, data_key=data_key, stripe_total=stripe_total, description=description))
 
 def shop_order_complete(request, order_id):
     if order_id:
         order = get_object_or_404(models.Order, id=order_id)
         order_items = models.OrderItem.objects.filter(order=order)
 
-    return render(request, 'store\shop-order-complete.html', dict(order=order, order_items=order_items))
+    return render(request, 'store/shop-order-complete.html', dict(order=order, order_items=order_items))
 
 def quick_view(request, category_slug, product_slug):
     try:
@@ -251,7 +251,7 @@ def signupView(request):
     else:
         form = SignUpForm()
 
-    return render(request, 'store\SignUp.html', {'form': form})
+    return render(request, 'store/SignUp.html', {'form': form})
 
 def signInView(request):
     if request.method == 'POST':
