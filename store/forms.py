@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 
-from store.models import Profile, AdditionalInformation, AdditionalInformationValue, CartItem
+from store.models import Profile, AdditionalInformation, AdditionalInformationValue, CartItem, Review, Product
 
 class SignUpForm(UserCreationForm):
     first_name = forms.CharField(max_length=100, required=True)
@@ -91,7 +91,6 @@ class CartItemForm(forms.ModelForm):
 
 def make_choosen_inforamtion_dict(product, data):
     choosen_informations = dict()
-    user_choose_informations = AdditionalInformation.objects.filter(product=product, user_choose=True)
 
     for field_name in data:
         field_value = data[field_name]
@@ -100,4 +99,12 @@ def make_choosen_inforamtion_dict(product, data):
         choosen_informations[field_name]= field_value
 
     return choosen_informations
+
+class AddReviewForm(forms.ModelForm):
+    product=forms.ModelChoiceField(queryset=Product.objects.all(), to_field_name='name')
+    
+    class Meta:
+        model = Review
+        fields = '__all__'
+
     

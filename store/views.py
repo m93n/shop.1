@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.db.models import Q
 import stripe
 from store import models
-from store.forms import SignUpForm, SignInForm, UserUpdateForm, ProfileUpdateForm, CartItemForm
+from store.forms import SignUpForm, SignInForm, UserUpdateForm, ProfileUpdateForm, CartItemForm, AddReviewForm
 from store.querysets import get_related_products
 
 from django.db.models import CharField
@@ -295,3 +295,22 @@ def user_profile(request):
             return redirect(to='user_profile')
     
     return render(request, 'store/user-profile.html', dict(user_form=user_form, profile_form=profile_form))
+
+def add_reviewView(request):
+    product = None
+    next = request.META.get("HTTP_REFERER", None) or "/"
+    if request.method == 'POST':
+        review_form = AddReviewForm(request.POST)
+        product_name = request.POST['product']
+        product = models.Product.objects.get(name=product_name)
+
+        if review_form.is_valid():
+            review_form.save()
+
+            return redirect(product)
+        
+        else:
+            errors = review_form.errors
+            related_products = get_related_products(product)
+            return render(request, 'store/product.html', {'product':product, "related_products": related_products, 'review_errors':errors})
+    
