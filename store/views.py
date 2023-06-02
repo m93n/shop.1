@@ -270,7 +270,7 @@ def signInView(request):
     else:
         form = SignInForm()
     
-    return render(request, 'store/signIn.html', {'form': form})
+    return render(request, 'store/SignIn.html', {'form': form})
 
 def signOutView(request):
     logout(request)
