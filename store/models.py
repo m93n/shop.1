@@ -47,6 +47,9 @@ class Product(models.Model):
     class Meta:
         ordering = ('name',)
 
+    def get_absolute_url(self):
+        return reverse("product_detail", kwargs={"category_slug": self.category, "product_slug":self.slug})
+
     def check_new_product(self):
 
         new_product_datetime_length = datetime_now - timedelta(weeks=2)

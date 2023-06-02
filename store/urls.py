@@ -18,4 +18,5 @@ urlpatterns = [
     path('checkout/', views.checkout, name='checkout_page'),
     path('<int:order_id>/order_complete/', views.shop_order_complete, name='shop_order_complete'),
     path('quick_view/<slug:category_slug>/<slug:product_slug>', views.quick_view, name='quick_view'),
+    path('add_review/', views.add_reviewView, name='add_review'),
 ]

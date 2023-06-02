@@ -44,7 +44,7 @@
 							<a href="#" class="text-decoration-none text-color-default text-color-hover-dark text-4"><i class="far fa-heart"></i></a>
 						</div>
 						<div title="">
-							<input type="text" class="rating-loading" value="{{ product.review_set.all.0.rate }}" title="" data-plugin-star-rating data-plugin-options="{'displayOnly': true, 'color': 'default', 'size':'xs'}">
+							<input type="text" class="rating-loading" value="{{ product.avarage_rate }}" title="" data-plugin-star-rating data-plugin-options="{'displayOnly': true, 'color': 'default', 'size':'xs'}">
 						</div>
 						<p class="price text-5 mb-3">
 							<span class="sale text-color-dark font-weight-semi-bold">${{product.sale_price}}</span>

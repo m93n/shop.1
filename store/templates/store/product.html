@@ -14,17 +14,6 @@
                 </ul>
             </div>
         </div>
-        {% if form.errors %}
-            <div class="alert alert-danger alert-dismissible" role="alert">
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                <div id="form_errors">
-                    {% for key, value in form.errors.items %}
-                        <strong><i class="fas fa-exclamation-triangle"></i>{{key}}{{ value }}</strong>
-                    {% endfor %}
-                </div>
-            </div>
-        {% endif %}
-
         <div class="row">
             <div class="col-md-5 mb-5 mb-md-0">
 
@@ -62,7 +51,7 @@
 
                     <div class="pb-0 clearfix d-flex align-items-center">
                         <div title="" class="float-start">
-                            <input type="text" class="rating-loading" value="{{ product.review_set.all.0.rate }}" title="" data-plugin-star-rating data-plugin-options="{'displayOnly': true, 'color': 'primary', 'size':'xs'}">
+                            <input type="text" class="rating-loading" value="{{ product.avarage_rate }}" title="" data-plugin-star-rating data-plugin-options="{'displayOnly': true, 'color': 'primary', 'size':'xs'}">
                         </div>
 
                         <div class="review-num">
@@ -172,7 +161,7 @@
                     <ul class="nav nav-tabs justify-content-start">
                         <li class="nav-item"><a class="nav-link active font-weight-bold text-3 text-uppercase py-2 px-3" href="#productDescription" data-bs-toggle="tab">Description</a></li>
                         <li class="nav-item"><a class="nav-link font-weight-bold text-3 text-uppercase py-2 px-3" href="#productInfo" data-bs-toggle="tab">Additional Information</a></li>
-                        <li class="nav-item"><a class="nav-link nav-link-reviews font-weight-bold text-3 text-uppercase py-2 px-3" href="#productReviews" data-bs-toggle="tab">Reviews (2)</a></li>
+                        <li class="nav-item"><a class="nav-link nav-link-reviews font-weight-bold text-3 text-uppercase py-2 px-3" href="#productReviews" data-bs-toggle="tab">Reviews ({{product.review_set.all.count}})</a></li>
                     </ul>
                     <div class="tab-content p-0">
                         <div class="tab-pane px-0 py-3 active" id="productDescription">
@@ -227,15 +216,29 @@
                                 {% endfor %}
                             </ul>
                             <hr class="solid my-5">
+                            {% if review_errors %}
+                            <div class="alert alert-danger alert-dismissible" role="alert">
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                <div id="form_errors">
+                                    {% for key, value in review_errors.items %}
+                                        <strong><i class="fas fa-exclamation-triangle"></i>{{key}} {{ value }}</strong>
+                                    {% endfor %}
+                                </div>
+                            </div>      
+                            {% endif %}
                             <h4>Add a review</h4>
                             <div class="row">
                                 <div class="col">
 
-                                    <form action="" id="submitReview" method="post">
+                                    <form action="{% url 'add_review' %}" id="submitReview" method="post">
+                                        {% csrf_token %}
+                                        <select id='id_product' name="product" hidden>
+                                            <option value="{{product.name}}" hidden></option>
+                                        </select>
                                         <div class="row">
                                             <div class="form-group col pb-2">
                                                 <label class="form-label required font-weight-bold text-dark">Rating</label>
-                                                <input type="text" class="rating-loading" value="0" title="" data-plugin-star-rating data-plugin-options="{'color': 'primary', 'size':'sm'}">
+                                                <input type="text" class="rating-loading" value="0" title="" data-plugin-star-rating data-plugin-options="{'color': 'primary', 'size':'sm'}" name="rate">
                                             </div>
                                         </div>
                                         <div class="row">
@@ -313,7 +316,7 @@
                                     <a href="#" class="text-decoration-none text-color-default text-color-hover-dark text-4"><i class="far fa-heart"></i></a>
                                 </div>
                                 <div title="">
-                                    <input type="text" class="rating-loading" value="{{ related_product.review_set.all.0.rate }}" title="" data-plugin-star-rating data-plugin-options="{'displayOnly': true, 'color': 'default', 'size':'xs'}">
+                                    <input type="text" class="rating-loading" value="{{ related_product.avarage_rate }}" title="" data-plugin-star-rating data-plugin-options="{'displayOnly': true, 'color': 'default', 'size':'xs'}">
                                 </div>
                                 <p class="price text-5 mb-3">
                                     <span class="sale text-color-dark font-weight-semi-bold">${{related_product.sale_price}}</span>
@@ -352,7 +355,7 @@
                         <a href="{% url 'products_by_category' top_product.category.slug %}" class="d-block text-uppercase text-decoration-none text-color-default text-color-hover-primary line-height-1 text-0 mb-2">{{top_product.category.name}}</a>
                         <h3 class="text-3-5 font-weight-medium font-alternative text-transform-none line-height-3 mb-0"><a href="{% url 'product_detail' top_product.category.slug top_product.slug %}" class="text-color-dark text-color-hover-primary text-decoration-none">{{top_product.name}}</a></h3>
                         <div title="">
-                            <input type="text" class="rating-loading" value="{{ top_product.review_set.all.0.rate }}" title="" data-plugin-star-rating data-plugin-options="{'displayOnly': true, 'color': 'dark', 'size':'xs'}">
+                            <input type="text" class="rating-loading" value="{{ top_product.avarage_rate }}" title="" data-plugin-star-rating data-plugin-options="{'displayOnly': true, 'color': 'dark', 'size':'xs'}">
                         </div>
                         <p class="price text-4 mb-0">
                             <span class="sale text-color-dark font-weight-semi-bold">${{top_product.sale_price}}</span>
