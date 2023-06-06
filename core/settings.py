@@ -38,10 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # project apps
-    'store',
-    'stripe',
+
+    # thirdparty apps    
     "nested_inline",
+    'stripe',
+
+    # my apps
+    'store',
+    'account'
 ]
 
 MIDDLEWARE = [
@@ -68,7 +72,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'store.context_processors.menu_link',
-                'store.context_processors.cart_item_counter_and_total',
+                'account.context_processors.cart_item_counter_and_total',
                 'store.context_processors.populer_tags',
             ],
         },

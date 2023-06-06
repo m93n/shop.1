@@ -133,3 +133,8 @@ store/migrations/
 
 #vscode
 .vscode/
+
+#media
+media/category
+media/product
+media/profile
